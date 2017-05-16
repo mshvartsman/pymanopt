@@ -78,7 +78,8 @@ class TensorflowBackend(Backend):
     @assert_backend_available
     def compute_hessian(self, objective, argument):
         if not isinstance(argument, list):
-            argA = tf.Variable(tf.zeros(tf.shape(argument), dtype=argument.dtype.base_dtype))
+            argA = tf.Variable(tf.zeros(tf.shape(argument),
+                               dtype=argument.dtype.base_dtype))
             tfhess = _hessian_vector_product(objective, [argument], [argA])
 
             def hess(x, a):
@@ -86,7 +87,8 @@ class TensorflowBackend(Backend):
                 return self._session.run(tfhess[0], feed_dict)
 
         else:
-            argA = [tf.Variable(tf.zeros(tf.shape(arg), dtype=arg.dtype.base_dtype))
+            argA = [tf.Variable(tf.zeros(tf.shape(arg),
+                                dtype=arg.dtype.base_dtype))
                     for arg in argument]
             tfhess = _hessian_vector_product(objective, argument, argA)
 
